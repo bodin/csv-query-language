@@ -27,6 +27,7 @@ run {
 }
 generateGrammarSource {
     outputDirectory = file('src/main/java/com/bodins/antlr')
+    arguments += ["-visitor"]
 }
 
 test {

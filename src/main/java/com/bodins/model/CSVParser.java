@@ -46,10 +46,23 @@ public class CSVParser {
 
     public void process(CSVProcessOptions options) throws Exception {
         String[][] content = options.getInput().read(options);
+
+        content = this.filter(options, content);
+
         List<SelectedColumn[]> selected = this.select(options, content);
         options.getOutput().write(options, selected);
     }
 
+    private String [][] filter(CSVProcessOptions options, String [][] content) {
+        if(options.getFilter() == null) return content;
+
+        List<String[]> result = Arrays
+                .stream(content)
+                .filter(options.getFilter()::eval)
+                .collect(Collectors.toList());
+
+        return result.toArray(new String[result.size()][]);
+    }
     private List<SelectedColumn[]> select(CSVProcessOptions options, String [][] content) {
         List<SelectedColumn[]> result = new ArrayList<>();
 

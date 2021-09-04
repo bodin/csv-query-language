@@ -22,11 +22,20 @@ order (1 based index).
 #### Command Syntax 
 Read from a file and print to the console:
 
-    with file <file> select *;
+    with file <file> [filter <expr>] [select <cols>] [write <file>];
 
 Read from a file and write select columns to another file:
 
     with file <file> select col<X>, col<Y>, col<Z> write file <file>;
+
+Expressions allowed
+* `col<X> = <string>` 
+* `col<X> contains <string>`
+* `<expr> and <expr>`
+* `<expr> or <expr>`
+* `not <expr>`
+* `(<expr>)`
+
 
 ## Examples
 
@@ -40,7 +49,7 @@ Read from a file and write select columns to another file:
 
 #### Selecting all columns
 
-    with file test.csv select *;
+    with file test.csv;
        a |  b | cccc
        1 |  2 |    3
        x | yy |    z
