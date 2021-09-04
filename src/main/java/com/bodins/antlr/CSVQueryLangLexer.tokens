@@ -1,0 +1,14 @@
+T__0=1
+OPEN=2
+SELECT=3
+COL=4
+STAR=5
+FILE=6
+COL_DIGIT=7
+ID=8
+WS=9
+','=1
+'open'=2
+'select'=3
+'col'=4
+'*'=5
