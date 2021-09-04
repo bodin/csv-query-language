@@ -5,9 +5,16 @@ import com.bodins.model.CSVParser;
 import java.util.Scanner;
 
 public class Main {
+    private static final CSVParser parser = new CSVParser();
 
-    public static void main(String [] args){
-        CSVParser parser = new CSVParser();
+    public static void main(String [] args) throws Exception {
+        if(args.length > 0){
+            parser.execute(args[0]);
+        }else{
+            repl();
+        }
+    }
+    public static void repl(){
 
         Scanner scanner = new Scanner(System.in);
         System.out.println("Welcome!");

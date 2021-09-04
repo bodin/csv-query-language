@@ -7,31 +7,40 @@ The language mimics basic query language syntax. Output can be reordered
 or duplicated into any combination.  Columns are referenced by their 
 order (1 based index).
 
-    > ./gradlew clean installDist
-    > ./build/install/csv-query-lang/bin/csv-query-lang
+#### Build the executable
 
-### Syntax 
+    ./gradlew clean installDist
+
+#### Execute a single command
+
+    ./build/install/csv-query-lang/bin/csv-query-lang '<command>'
+
+#### Enter into a REPL
+
+    ./build/install/csv-query-lang/bin/csv-query-lang
+
+#### Command Syntax 
 Read from a file and print to the console:
 
-    csv> with file <file> select *;
+    with file <file> select *;
 
-Read from a file and write to another file:
+Read from a file and write select columns to another file:
 
-    csv> with file <file> select col<X>, col<Y>, col<Z> write file <file>;
+    with file <file> select col<X>, col<Y>, col<Z> write file <file>;
 
 ## Examples
 
-Selecting specific columns
+#### Selecting specific columns
 
-    csv> with file test.csv select col1, col2, col1, col2;
+    with file test.csv select col1, col2, col1, col2;
        a |  b |    a |  b
        1 |  2 |    1 |  2
        x | yy |    x | yy
     3333 |  2 | 3333 |  2
 
-Selecting all columns
+#### Selecting all columns
 
-    csv> with file test.csv select *;
+    with file test.csv select *;
        a |  b | cccc
        1 |  2 |    3
        x | yy |    z
