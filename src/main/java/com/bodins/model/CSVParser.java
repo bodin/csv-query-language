@@ -45,15 +45,33 @@ public class CSVParser {
 
     public void process(CSVProcessOptions options) throws Exception {
         String[][] content = options.getInput().read(options);
-        options.getOutput().write(options, content);
+        List<SelectedColumn[]> selected = this.select(options, content);
+        options.getOutput().write(options, selected);
     }
 
-    private String[][] readCsv(String fileName) throws Exception {
-        List<String[]> records = new ArrayList<>();
-        try (CSVReader csvReader = new CSVReader(new FileReader(fileName))) {
-            records = csvReader.readAll();
+    private List<SelectedColumn[]> select(CSVProcessOptions options, String [][] content) {
+        List<SelectedColumn[]> result = new ArrayList<>();
+        for(String [] row : content) {
+            if (options.isSelectAll()) {
+                SelectedColumn[] selected = new SelectedColumn[row.length];
+                for (int col = 0; col < selected.length; col++) {
+                    selected[col] = new SelectedColumn(col, row[col]);
+                }
+                result.add(selected);
+            }else {
+                SelectedColumn[] selected = new SelectedColumn[options.getColumns().size()];
+                for (int col = 0; col < selected.length; col++) {
+                    int original = options.getColumns().get(col);
+                    if(original < row.length) {
+                        selected[col] = new SelectedColumn(original, row[original]);
+                    }else{
+                        selected[col] = new SelectedColumn(original, null);
+                    }
+                }
+                result.add(selected);
+            }
         }
-        return records.toArray(new String[0][]);
+        return result;
     }
 
     private static class ThrowingErrorListener extends BaseErrorListener {

@@ -1,10 +1,12 @@
 package com.bodins.model.output;
 
 import com.bodins.model.CSVProcessOptions;
+import com.bodins.model.SelectedColumn;
 import com.opencsv.CSVWriter;
 
 import java.io.FileWriter;
 import java.util.Arrays;
+import java.util.List;
 
 public class FileOutput implements Output{
 
@@ -15,11 +17,10 @@ public class FileOutput implements Output{
     }
 
     @Override
-    public void write(CSVProcessOptions options, String[][] content) throws Exception{
+    public void write(CSVProcessOptions options, List<SelectedColumn[]> content) throws Exception{
         try (CSVWriter csv = new CSVWriter(new FileWriter(this.fileName))) {
-            for(String[] row : content) {
-                SelectedColumn[] selected = this.selectRow(options, row);
-                String[] nextRow = Arrays.stream(selected)
+            for(SelectedColumn[] row : content) {
+                String[] nextRow = Arrays.stream(row)
                         .map(SelectedColumn::text)
                         .toArray(i -> new String[i]);
                 csv.writeNext(nextRow);

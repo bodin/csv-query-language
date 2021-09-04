@@ -1,33 +1,35 @@
 package com.bodins.model.output;
 
 import com.bodins.model.CSVProcessOptions;
+import com.bodins.model.SelectedColumn;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PrintOutput implements Output{
     @Override
-    public void write(CSVProcessOptions options, String[][] content) {
+    public void write(CSVProcessOptions options, List<SelectedColumn[]> content) {
 
-        if(content.length == 0) return;
+        if(content.size() == 0) return;
 
-        //HACK - making an assumption the content is 'square'
-        //SLOW - we are calculating the widths of all columns, regardless of which are selected
-        int [] widths = new int[content[0].length];
-        for(int row = 0; row < content.length; row++){
-            for(int col = 0; col < content[row].length; col++) {
-                widths[col] = Math.max(widths[col], length(content[row][col]));
+        List<Integer> widths = new ArrayList<>();
+        for(SelectedColumn[] row : content){
+            for(int col = 0; col < row.length; col++) {
+                if(col < widths.size()){
+                    widths.set(col, Math.max(widths.get(col), length(row[col].text())));
+                } else{
+                    widths.add(length(row[col].text()));
+                }
             }
         }
 
 
-        for(int row = 0; row < content.length; row++) {
-            //grab only the columns that we want, in the order we want them
-            SelectedColumn[] selected = this.selectRow(options, content[row]);
-
-            for (int col = 0; col < selected.length; col++) {
-                //grab the width based on the original calculations above (need the original placement)
-                int width = widths[selected[col].originalColumn()];
+        for(SelectedColumn[] row : content){
+            for (int col = 0; col < row.length; col++) {
+                int width = widths.get(col);
 
                 //pad the value out
-                String value = String.format("%1$" + width+ "s", selected[col].text());
+                String value = String.format("%1$" + width+ "s", row[col].text());
 
                 //add our seperator
                 if(col > 0) value = " | " + value;
