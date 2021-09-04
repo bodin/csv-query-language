@@ -1,28 +1,26 @@
 package com.bodins.model;
 
+import com.bodins.model.input.Input;
+import com.bodins.model.output.Output;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class CSVProcessOptions {
-    private String fileName;
+    private Input input;
+    private Output output;
     private List<Integer> columns = new ArrayList<>();
-
-    private Output output = new PrintOutput();
 
     public boolean isSelectAll(){
         return this.columns.isEmpty();
     }
 
-    public String getFileName() {
-        return fileName;
+    public Input getInput() {
+        return input;
     }
 
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
-    public List<Integer> getColumns() {
-        return columns;
+    public void setInput(Input input) {
+        this.input = input;
     }
 
     public Output getOutput() {
@@ -31,5 +29,9 @@ public class CSVProcessOptions {
 
     public void setOutput(Output output) {
         this.output = output;
+    }
+
+    public List<Integer> getColumns() {
+        return columns;
     }
 }

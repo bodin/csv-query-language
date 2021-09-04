@@ -1,4 +1,6 @@
-package com.bodins.model;
+package com.bodins.model.output;
+
+import com.bodins.model.CSVProcessOptions;
 
 public class PrintOutput implements Output{
     @Override
@@ -22,10 +24,10 @@ public class PrintOutput implements Output{
 
             for (int col = 0; col < selected.length; col++) {
                 //grab the width based on the original calculations above (need the original placement)
-                int width = widths[selected[col].getOriginalColumn()];
+                int width = widths[selected[col].originalColumn()];
 
                 //pad the value out
-                String value = String.format("%1$" + width+ "s", selected[col].getText());
+                String value = String.format("%1$" + width+ "s", selected[col].text());
 
                 //add our seperator
                 if(col > 0) value = " | " + value;

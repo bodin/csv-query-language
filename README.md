@@ -9,14 +9,20 @@ order (1 based index).
 
     > ./gradlew run
 
-    csv> open <file> select *
-    csv> open <file> select col<X>, col<Y>, col<Z>
+### Syntax 
+Read from a file and print to the console:
+
+    csv> with file <file> select *;
+
+Read from a file and write to another file:
+
+    csv> with file <file> select col<X>, col<Y>, col<Z> write file <file>;
 
 ## Examples
 
 Selecting specific columns
 
-    csv> open test.csv select col1, col2, col1, col2
+    csv> with file test.csv select col1, col2, col1, col2;
        a |  b |    a |  b
        1 |  2 |    1 |  2
        x | yy |    x | yy
@@ -24,7 +30,7 @@ Selecting specific columns
 
 Selecting all columns
 
-    csv> open test.csv select *
+    csv> with file test.csv select *;
        a |  b | cccc
        1 |  2 |    3
        x | yy |    z

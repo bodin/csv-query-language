@@ -21,20 +21,22 @@ public class CSVParser {
         }
     }
     public CSVProcessOptions parse(String s) {
+        // setup the lexer with fail fast
         CSVQueryLangLexer lexer = new CSVQueryLangLexer(CharStreams.fromString(s));
         lexer.removeErrorListeners();
         lexer.addErrorListener(ThrowingErrorListener.INSTANCE);
 
         CommonTokenStream tokens = new CommonTokenStream(lexer);
 
+        // setup the parser with fail fast
         CSVQueryLangParser parser = new CSVQueryLangParser(tokens);
         parser.removeErrorListeners();
         parser.addErrorListener(ThrowingErrorListener.INSTANCE);
 
+        // parse
         CSVQueryLangParser.RootContext context = parser.root();
 
-        if(parser.getNumberOfSyntaxErrors() > 0) return null;
-
+        // work over the AST
         ParseTreeWalker walker = new ParseTreeWalker();
         Listener listener = new Listener();
         walker.walk(listener, context);
@@ -42,7 +44,7 @@ public class CSVParser {
     }
 
     public void process(CSVProcessOptions options) throws Exception {
-        String[][] content = readCsv(options.getFileName());
+        String[][] content = options.getInput().read(options);
         options.getOutput().write(options, content);
     }
 

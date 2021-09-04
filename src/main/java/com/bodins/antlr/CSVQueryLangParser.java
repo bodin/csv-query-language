@@ -19,26 +19,29 @@ public class CSVQueryLangParser extends Parser {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		T__0=1, OPEN=2, SELECT=3, COL=4, STAR=5, FILE=6, COL_DIGIT=7, ID=8, WS=9;
+		T__0=1, T__1=2, WITH=3, WRITE=4, FILE=5, SELECT=6, COL=7, STAR=8, FILE_NAME=9, 
+		COL_DIGIT=10, ID=11, WS=12;
 	public static final int
-		RULE_root = 0, RULE_cols = 1, RULE_col = 2;
+		RULE_root = 0, RULE_with_clause = 1, RULE_select_clause = 2, RULE_out_clause = 3, 
+		RULE_cols = 4, RULE_col = 5;
 	private static String[] makeRuleNames() {
 		return new String[] {
-			"root", "cols", "col"
+			"root", "with_clause", "select_clause", "out_clause", "cols", "col"
 		};
 	}
 	public static final String[] ruleNames = makeRuleNames();
 
 	private static String[] makeLiteralNames() {
 		return new String[] {
-			null, "','", "'open'", "'select'", "'col'", "'*'"
+			null, "';'", "','", "'with'", "'write'", "'file'", "'select'", "'col'", 
+			"'*'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
-			null, null, "OPEN", "SELECT", "COL", "STAR", "FILE", "COL_DIGIT", "ID", 
-			"WS"
+			null, null, null, "WITH", "WRITE", "FILE", "SELECT", "COL", "STAR", "FILE_NAME", 
+			"COL_DIGIT", "ID", "WS"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -93,11 +96,14 @@ public class CSVQueryLangParser extends Parser {
 	}
 
 	public static class RootContext extends ParserRuleContext {
-		public TerminalNode OPEN() { return getToken(CSVQueryLangParser.OPEN, 0); }
-		public TerminalNode FILE() { return getToken(CSVQueryLangParser.FILE, 0); }
-		public TerminalNode SELECT() { return getToken(CSVQueryLangParser.SELECT, 0); }
-		public ColsContext cols() {
-			return getRuleContext(ColsContext.class,0);
+		public With_clauseContext with_clause() {
+			return getRuleContext(With_clauseContext.class,0);
+		}
+		public Select_clauseContext select_clause() {
+			return getRuleContext(Select_clauseContext.class,0);
+		}
+		public Out_clauseContext out_clause() {
+			return getRuleContext(Out_clauseContext.class,0);
 		}
 		public RootContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -119,14 +125,185 @@ public class CSVQueryLangParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(6);
-			match(OPEN);
-			setState(7);
+			setState(12);
+			with_clause();
+			setState(13);
+			select_clause();
+			setState(14);
+			out_clause();
+			setState(15);
+			match(T__0);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class With_clauseContext extends ParserRuleContext {
+		public With_clauseContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_with_clause; }
+	 
+		public With_clauseContext() { }
+		public void copyFrom(With_clauseContext ctx) {
+			super.copyFrom(ctx);
+		}
+	}
+	public static class WithFileContext extends With_clauseContext {
+		public TerminalNode WITH() { return getToken(CSVQueryLangParser.WITH, 0); }
+		public TerminalNode FILE() { return getToken(CSVQueryLangParser.FILE, 0); }
+		public TerminalNode FILE_NAME() { return getToken(CSVQueryLangParser.FILE_NAME, 0); }
+		public WithFileContext(With_clauseContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof CSVQueryLangListener ) ((CSVQueryLangListener)listener).enterWithFile(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof CSVQueryLangListener ) ((CSVQueryLangListener)listener).exitWithFile(this);
+		}
+	}
+
+	public final With_clauseContext with_clause() throws RecognitionException {
+		With_clauseContext _localctx = new With_clauseContext(_ctx, getState());
+		enterRule(_localctx, 2, RULE_with_clause);
+		try {
+			_localctx = new WithFileContext(_localctx);
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(17);
+			match(WITH);
+			setState(18);
 			match(FILE);
-			setState(8);
+			setState(19);
+			match(FILE_NAME);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class Select_clauseContext extends ParserRuleContext {
+		public TerminalNode SELECT() { return getToken(CSVQueryLangParser.SELECT, 0); }
+		public ColsContext cols() {
+			return getRuleContext(ColsContext.class,0);
+		}
+		public Select_clauseContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_select_clause; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof CSVQueryLangListener ) ((CSVQueryLangListener)listener).enterSelect_clause(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof CSVQueryLangListener ) ((CSVQueryLangListener)listener).exitSelect_clause(this);
+		}
+	}
+
+	public final Select_clauseContext select_clause() throws RecognitionException {
+		Select_clauseContext _localctx = new Select_clauseContext(_ctx, getState());
+		enterRule(_localctx, 4, RULE_select_clause);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(21);
 			match(SELECT);
-			setState(9);
+			setState(22);
 			cols();
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class Out_clauseContext extends ParserRuleContext {
+		public Out_clauseContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_out_clause; }
+	 
+		public Out_clauseContext() { }
+		public void copyFrom(Out_clauseContext ctx) {
+			super.copyFrom(ctx);
+		}
+	}
+	public static class PrintContext extends Out_clauseContext {
+		public PrintContext(Out_clauseContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof CSVQueryLangListener ) ((CSVQueryLangListener)listener).enterPrint(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof CSVQueryLangListener ) ((CSVQueryLangListener)listener).exitPrint(this);
+		}
+	}
+	public static class WriteFileContext extends Out_clauseContext {
+		public TerminalNode WRITE() { return getToken(CSVQueryLangParser.WRITE, 0); }
+		public TerminalNode FILE() { return getToken(CSVQueryLangParser.FILE, 0); }
+		public TerminalNode FILE_NAME() { return getToken(CSVQueryLangParser.FILE_NAME, 0); }
+		public WriteFileContext(Out_clauseContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof CSVQueryLangListener ) ((CSVQueryLangListener)listener).enterWriteFile(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof CSVQueryLangListener ) ((CSVQueryLangListener)listener).exitWriteFile(this);
+		}
+	}
+
+	public final Out_clauseContext out_clause() throws RecognitionException {
+		Out_clauseContext _localctx = new Out_clauseContext(_ctx, getState());
+		enterRule(_localctx, 6, RULE_out_clause);
+		try {
+			setState(28);
+			_errHandler.sync(this);
+			switch (_input.LA(1)) {
+			case WRITE:
+				_localctx = new WriteFileContext(_localctx);
+				enterOuterAlt(_localctx, 1);
+				{
+				setState(24);
+				match(WRITE);
+				setState(25);
+				match(FILE);
+				setState(26);
+				match(FILE_NAME);
+				}
+				break;
+			case T__0:
+				_localctx = new PrintContext(_localctx);
+				enterOuterAlt(_localctx, 2);
+				{
+				}
+				break;
+			default:
+				throw new NoViableAltException(this);
 			}
 		}
 		catch (RecognitionException re) {
@@ -164,37 +341,37 @@ public class CSVQueryLangParser extends Parser {
 
 	public final ColsContext cols() throws RecognitionException {
 		ColsContext _localctx = new ColsContext(_ctx, getState());
-		enterRule(_localctx, 2, RULE_cols);
+		enterRule(_localctx, 8, RULE_cols);
 		int _la;
 		try {
-			setState(20);
+			setState(39);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case STAR:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(11);
+				setState(30);
 				match(STAR);
 				}
 				break;
 			case COL:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(12);
+				setState(31);
 				col();
-				setState(17);
+				setState(36);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-				while (_la==T__0) {
+				while (_la==T__1) {
 					{
 					{
-					setState(13);
-					match(T__0);
-					setState(14);
+					setState(32);
+					match(T__1);
+					setState(33);
 					col();
 					}
 					}
-					setState(19);
+					setState(38);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
@@ -234,13 +411,13 @@ public class CSVQueryLangParser extends Parser {
 
 	public final ColContext col() throws RecognitionException {
 		ColContext _localctx = new ColContext(_ctx, getState());
-		enterRule(_localctx, 4, RULE_col);
+		enterRule(_localctx, 10, RULE_col);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(22);
+			setState(41);
 			match(COL);
-			setState(23);
+			setState(42);
 			match(COL_DIGIT);
 			}
 		}
@@ -256,14 +433,18 @@ public class CSVQueryLangParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\13\34\4\2\t\2\4\3"+
-		"\t\3\4\4\t\4\3\2\3\2\3\2\3\2\3\2\3\3\3\3\3\3\3\3\7\3\22\n\3\f\3\16\3\25"+
-		"\13\3\5\3\27\n\3\3\4\3\4\3\4\3\4\2\2\5\2\4\6\2\2\2\32\2\b\3\2\2\2\4\26"+
-		"\3\2\2\2\6\30\3\2\2\2\b\t\7\4\2\2\t\n\7\b\2\2\n\13\7\5\2\2\13\f\5\4\3"+
-		"\2\f\3\3\2\2\2\r\27\7\7\2\2\16\23\5\6\4\2\17\20\7\3\2\2\20\22\5\6\4\2"+
-		"\21\17\3\2\2\2\22\25\3\2\2\2\23\21\3\2\2\2\23\24\3\2\2\2\24\27\3\2\2\2"+
-		"\25\23\3\2\2\2\26\r\3\2\2\2\26\16\3\2\2\2\27\5\3\2\2\2\30\31\7\6\2\2\31"+
-		"\32\7\t\2\2\32\7\3\2\2\2\4\23\26";
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\16/\4\2\t\2\4\3\t"+
+		"\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\3\2\3\2\3\2\3\2\3\2\3\3\3\3\3\3\3\3"+
+		"\3\4\3\4\3\4\3\5\3\5\3\5\3\5\5\5\37\n\5\3\6\3\6\3\6\3\6\7\6%\n\6\f\6\16"+
+		"\6(\13\6\5\6*\n\6\3\7\3\7\3\7\3\7\2\2\b\2\4\6\b\n\f\2\2\2+\2\16\3\2\2"+
+		"\2\4\23\3\2\2\2\6\27\3\2\2\2\b\36\3\2\2\2\n)\3\2\2\2\f+\3\2\2\2\16\17"+
+		"\5\4\3\2\17\20\5\6\4\2\20\21\5\b\5\2\21\22\7\3\2\2\22\3\3\2\2\2\23\24"+
+		"\7\5\2\2\24\25\7\7\2\2\25\26\7\13\2\2\26\5\3\2\2\2\27\30\7\b\2\2\30\31"+
+		"\5\n\6\2\31\7\3\2\2\2\32\33\7\6\2\2\33\34\7\7\2\2\34\37\7\13\2\2\35\37"+
+		"\3\2\2\2\36\32\3\2\2\2\36\35\3\2\2\2\37\t\3\2\2\2 *\7\n\2\2!&\5\f\7\2"+
+		"\"#\7\4\2\2#%\5\f\7\2$\"\3\2\2\2%(\3\2\2\2&$\3\2\2\2&\'\3\2\2\2\'*\3\2"+
+		"\2\2(&\3\2\2\2) \3\2\2\2)!\3\2\2\2*\13\3\2\2\2+,\7\t\2\2,-\7\f\2\2-\r"+
+		"\3\2\2\2\5\36&)";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

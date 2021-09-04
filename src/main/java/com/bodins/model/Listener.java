@@ -2,6 +2,9 @@ package com.bodins.model;
 
 import com.bodins.antlr.CSVQueryLangBaseListener;
 import com.bodins.antlr.CSVQueryLangParser;
+import com.bodins.model.input.FileInput;
+import com.bodins.model.output.FileOutput;
+import com.bodins.model.output.PrintOutput;
 
 public class Listener extends CSVQueryLangBaseListener {
     private final CSVProcessOptions options = new CSVProcessOptions();
@@ -11,8 +14,18 @@ public class Listener extends CSVQueryLangBaseListener {
     }
 
     @Override
-    public void enterRoot(CSVQueryLangParser.RootContext ctx) {
-        this.options.setFileName(ctx.FILE().getText());
+    public void enterWithFile(CSVQueryLangParser.WithFileContext ctx) {
+        this.options.setInput(new FileInput(ctx.FILE_NAME().getText()));
+    }
+
+    @Override
+    public void enterPrint(CSVQueryLangParser.PrintContext ctx) {
+        this.options.setOutput(new PrintOutput());
+    }
+
+    @Override
+    public void enterWriteFile(CSVQueryLangParser.WriteFileContext ctx) {
+        this.options.setOutput(new FileOutput(ctx.FILE_NAME().getText()));
     }
 
     @Override

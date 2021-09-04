@@ -11,26 +11,30 @@ public class Main {
 
         Scanner scanner = new Scanner(System.in);
         System.out.println("Welcome!");
-        System.out.println("Enter 'q' to quit.");
+        System.out.println("Enter 'q;' to quit.");
         System.out.println();
         System.out.println("Examples:");
-        System.out.println("\topen test.csv select *");
-        System.out.println("\topen test.csv select col1, col2");
-        System.out.println("\topen test.csv select col1, col2, col1, col2");
+        System.out.println("\twith file test.csv select *;");
+        System.out.println("\twith file test.csv select col1, col2;");
+        System.out.println("\twith file test.csv select col1, col2, col1, col2;");
         System.out.println();
 
         boolean run = true;
+
         while(run) {
             System.out.print("csv> ");
-            String statement = scanner.nextLine();
-            if("".equals(statement.trim())) continue;
 
-            run = !"q".equalsIgnoreCase(statement);
+            StringBuilder statement = new StringBuilder(scanner.nextLine());
+            while(!statement.toString().contains(";")) {
+                statement.append(" ").append(scanner.nextLine());
+            }
+
+            run = !"q;".equalsIgnoreCase(statement.toString());
             try {
-                if (run){
-                   parser.execute(statement);
+                if (run) {
+                   parser.execute(statement.toString());
                 }
-            }catch(Exception e){
+            } catch(Exception e) {
                 System.err.println(e.getMessage());
             }
         }
