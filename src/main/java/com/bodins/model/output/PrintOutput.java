@@ -27,9 +27,11 @@ public class PrintOutput implements Output{
         for(SelectedColumn[] row : content){
             for (int col = 0; col < row.length; col++) {
                 int width = widths.get(col);
+                String text = row[col].text();
+                if(text == null) text = "";
 
                 //pad the value out
-                String value = String.format("%1$" + width+ "s", row[col].text());
+                String value = String.format("%1$" + width+ "s", text);
 
                 //add our seperator
                 if(col > 0) value = " | " + value;

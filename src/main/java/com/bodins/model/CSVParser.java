@@ -2,14 +2,15 @@ package com.bodins.model;
 
 import com.bodins.antlr.CSVQueryLangLexer;
 import com.bodins.antlr.CSVQueryLangParser;
-import com.opencsv.CSVReader;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.misc.ParseCancellationException;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
-import java.io.FileReader;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CSVParser {
 
@@ -51,25 +52,31 @@ public class CSVParser {
 
     private List<SelectedColumn[]> select(CSVProcessOptions options, String [][] content) {
         List<SelectedColumn[]> result = new ArrayList<>();
+
+        int maxWidth = Arrays
+                    .stream(content)
+                    .map(Array::getLength)
+                    .collect(Collectors.maxBy(Integer::compare))
+                .orElse(0);
+
         for(String [] row : content) {
-            if (options.isSelectAll()) {
-                SelectedColumn[] selected = new SelectedColumn[row.length];
-                for (int col = 0; col < selected.length; col++) {
-                    selected[col] = new SelectedColumn(col, row[col]);
+
+            SelectedColumn[] selected = options.isSelectAll()
+                    ? new SelectedColumn[maxWidth]
+                    : new SelectedColumn[options.getColumns().size()];
+
+            for (int col = 0; col < selected.length; col++) {
+                int sourceIndex = options.isSelectAll()
+                        ? col
+                        : options.getColumns().get(col) ;
+
+                if(sourceIndex < row.length) {
+                    selected[col] = new SelectedColumn(sourceIndex, row[sourceIndex]);
+                }else{
+                    selected[col] = new SelectedColumn(sourceIndex, null);
                 }
-                result.add(selected);
-            }else {
-                SelectedColumn[] selected = new SelectedColumn[options.getColumns().size()];
-                for (int col = 0; col < selected.length; col++) {
-                    int original = options.getColumns().get(col);
-                    if(original < row.length) {
-                        selected[col] = new SelectedColumn(original, row[original]);
-                    }else{
-                        selected[col] = new SelectedColumn(original, null);
-                    }
-                }
-                result.add(selected);
             }
+            result.add(selected);
         }
         return result;
     }
