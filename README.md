@@ -7,7 +7,8 @@ The language mimics basic query language syntax. Output can be reordered
 or duplicated into any combination.  Columns are referenced by their 
 order (1 based index).
 
-    > ./gradlew run
+    > ./gradlew clean installDist
+    > ./build/install/csv-query-lang/bin/csv-query-lang
 
 ### Syntax 
 Read from a file and print to the console:
